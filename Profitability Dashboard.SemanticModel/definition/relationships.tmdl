@@ -1,0 +1,20 @@
+relationship 500b79c7-3d5a-4abd-9811-4e70eaf59f77
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Data.'Data do documento'
+	toColumn: LocalDateTable_a7ace612-ac71-4e8c-9b42-9ca5d8b962cd.Date
+
+relationship 1be1c2c5-8e76-7c8a-c811-9d55c7365e3e
+	crossFilteringBehavior: bothDirections
+	fromColumn: Data.Conta
+	toColumn: Accounts.Conta
+
+relationship 6685949e-ff6f-4d2e-a8e9-95e3b69bddba
+	joinOnDateBehavior: datePartOnly
+	fromColumn: CalendarTable.Date
+	toColumn: LocalDateTable_febfb33e-5cdb-4198-b368-790cede113c1.Date
+
+relationship 629a17d4-5886-73f4-af94-3d147c919bfd
+	crossFilteringBehavior: bothDirections
+	fromColumn: Data.'Data lançamento'
+	toColumn: CalendarTable.Date
+

@@ -1,0 +1,29 @@
+table CalculationPeriod
+	lineageTag: 80e57026-4277-442a-aac1-9b1409ae7111
+
+	column Period
+		lineageTag: 62f20df9-7414-4ade-9dbd-97bd251fd6df
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Period]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition CalculationPeriod = calculated
+		mode: import
+		source = ```
+				
+				    DATATABLE(
+				        "Period", STRING,
+				        {
+				            {"YTD"},
+				            {"L12M"},
+				            {"L6M"},
+				            {"L3M"}
+				        }
+				    )
+				
+				```
+
+	annotation PBI_Id = 415fe01436fb4f67a8e8127b1fe69c27
+
