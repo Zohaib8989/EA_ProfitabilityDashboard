@@ -1,0 +1,3304 @@
+table _Measures
+	lineageTag: bceaee26-5004-4830-9031-3791c9e32cd4
+
+	measure 'Total Income' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Type] = "Income"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Type] = "Income"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Type] = "Income"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Type] = "Income"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		displayFolder: Income
+		lineageTag: f64257f3-c87f-4c46-aab3-8c9c7397d332
+
+	measure COGS = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Category1] = "Cost of Sales"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Category1] = "Cost of Sales"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Category1] = "Cost of Sales"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Category1] = "Cost of Sales"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		displayFolder: Expenses
+		lineageTag: 5bca925d-e209-4099-b550-146f922eacce
+
+	measure 'Total Expenses' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Type] = "Expense"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Type] = "Expense"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Type] = "Expense"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Type] = "Expense"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		displayFolder: Expenses
+		lineageTag: 115d6af8-5840-4808-b094-e1973f771a6e
+
+	measure 'Other Expenses' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Category1] = "Other Expenses"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Category1] = "Other Expenses"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Category1] = "Other Expenses"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Category1] = "Other Expenses"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		displayFolder: Expenses
+		lineageTag: 9eefec96-879c-44d1-8e0c-8ec16749c042
+
+	measure 'Operating Expenses' = [Total Expenses] - [COGS] - [Other Expenses]
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		displayFolder: Expenses
+		lineageTag: cfc5dc75-5257-4b0b-817f-2c8237c2d11a
+
+	measure 'Other Income' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Category1] = "Other Income"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Category1] = "Other Income"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Category1] = "Other Income"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            Accounts[Category1] = "Other Income"
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		displayFolder: Income
+		lineageTag: 32cc483e-b83d-48f8-b1f7-8d9798f33193
+
+	measure 'Dynamic Income' = [Total Income] - [Other Income]
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		displayFolder: Income
+		lineageTag: c97bf63b-0ad9-48aa-8466-c741d87f6cae
+
+	measure 'Gross Profit' = [Dynamic Income] - [COGS]
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		displayFolder: Profitability
+		lineageTag: 3e928096-488f-43e5-ab7e-faec04ee4d84
+
+	measure EBITDA = [Gross Profit] - [Operating Expenses]
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		displayFolder: Profitability
+		lineageTag: 03d0755e-34ab-4de8-bafa-9818b33e712c
+
+	measure 'Net Income' = [EBITDA] + [Other Income] - [Other Expenses]
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		displayFolder: Profitability
+		lineageTag: 07dbe069-fe2b-4749-9ac0-edf75cf2ee1e
+
+	measure 'Gross Margin' = ```
+			
+			    IF(
+			        [Dynamic Income] < 1,
+			        0,
+			        DIVIDE(
+			            [Gross Profit],
+			            [Dynamic Income]
+			        )
+			    )
+			
+			```
+		formatString: 0%;-0%;0%
+		displayFolder: Profitability
+		lineageTag: c67c2acf-c626-4471-b1cc-52eb40efbafb
+
+	measure 'EBITDA Margin' = ```
+			
+			    IF(
+			        [Dynamic Income] < 1,
+			        0,
+			        DIVIDE(
+			            [EBITDA],
+			            [Dynamic Income]
+			        )
+			    )
+			
+			```
+		formatString: 0%;-0%;0%
+		displayFolder: Profitability
+		lineageTag: b5bfa28d-f5be-4c93-855e-2c64a348a84c
+
+	measure 'Net Margin' = ```
+			
+			    IF(
+			        [Dynamic Income] < 1,
+			        0,
+			        DIVIDE(
+			            [Net Income],
+			            [Dynamic Income]
+			        )
+			    )
+			
+			```
+		formatString: 0%;-0%;0%
+		displayFolder: Profitability
+		lineageTag: 3ae7ea01-81b7-4beb-8d55-d58834d2b73b
+
+	measure IncomeTitle = ```
+			
+			    "Income for " &
+			    SWITCH(
+			        SELECTEDVALUE(CalculationPeriod[Period], "Not Applicable"),
+			        "YTD", "Year to Date",
+			        "L12M", "Last 12 Months",
+			        "L6M", "Last 6 Months",
+			        "L3M", "Last 3 Months",
+			        "Not Applicable"
+			    )
+			
+			```
+		displayFolder: Income
+		lineageTag: f1707d9d-c19b-49c9-b441-5caf877f022a
+
+	measure IncomeSubTitle = ```
+			
+			    SWITCH(
+			        SELECTEDVALUE(CalculationPeriod[Period]),
+			        
+			        // Last 12 Months (L12M)
+			        "L12M", 
+			        "Total: " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                    FILTER(
+			                        Accounts,
+			                        Accounts[Type] = "Income"
+			                    ),
+			                    FILTER(
+			                        CalendarTable,
+			                        CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From 12 months ago
+			                        CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                    )
+			                )
+			            ), 
+			            "€ #,##0"
+			        ) & 
+			        " | Average: " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                    FILTER(
+			                        Accounts,
+			                        Accounts[Type] = "Income"
+			                    ),
+			                    FILTER(
+			                        CalendarTable,
+			                        CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From 12 months ago
+			                        CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                    )
+			                )
+			            ) / 12, 
+			            "€ #,##0"
+			        ),
+			        
+			        // Last 6 Months (L6M)
+			        "L6M", 
+			        "Total: " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                    FILTER(
+			                        Accounts,
+			                        Accounts[Type] = "Income"
+			                    ),
+			                    FILTER(
+			                        CalendarTable,
+			                        CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From 6 months ago
+			                        CalendarTable[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ), 
+			            "€ #,##0"
+			        ) & 
+			        " | Average: " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                    FILTER(
+			                        Accounts,
+			                        Accounts[Type] = "Income"
+			                    ),
+			                    FILTER(
+			                        CalendarTable,
+			                        CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From 6 months ago
+			                        CalendarTable[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ) / 6, 
+			            "€ #,##0"
+			        ),
+			        
+			        // Last 3 Months (L3M)
+			        "L3M", 
+			        "Total: " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                    FILTER(
+			                        Accounts,
+			                        Accounts[Type] = "Income"
+			                    ),
+			                    FILTER(
+			                        CalendarTable,
+			                        CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From 3 months ago
+			                        CalendarTable[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ), 
+			            "€ #,##0"
+			        ) & 
+			        " | Average: " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                    FILTER(
+			                        Accounts,
+			                        Accounts[Type] = "Income"
+			                    ),
+			                    FILTER(
+			                        CalendarTable,
+			                        CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From 3 months ago
+			                        CalendarTable[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ) / 3, 
+			            "€ #,##0"
+			        ),
+			
+			        // Year-to-Date (YTD)
+			        "YTD", 
+			        "Total: " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                    FILTER(
+			                        Accounts,
+			                        Accounts[Type] = "Income"
+			                    ),
+			                    FILTER(
+			                        CalendarTable,
+			                        CalendarTable[Date] >= DATE(YEAR(TODAY()), 1, 1) && // From the first day of the current year
+			                        CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                    )
+			                )
+			            ), 
+			            "€ #,##0"
+			        ) & 
+			        " | Average: " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                    FILTER(
+			                        Accounts,
+			                        Accounts[Type] = "Income"
+			                    ),
+			                    FILTER(
+			                        CalendarTable,
+			                        CalendarTable[Date] >= DATE(YEAR(TODAY()), 1, 1) && // From the first day of the current year
+			                        CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                    )
+			                )
+			            ) / MONTH(TODAY() - 1), 
+			            "€ #,##0"
+			        ),
+			
+			        "Not Applicable"
+			    )
+			
+			```
+		displayFolder: Income
+		lineageTag: aa6340a4-bdb6-4d53-a0d7-8dfc52fa9644
+
+	measure ExpenseTitle = ```
+			
+			    "Expenses for " &
+			    SWITCH(
+			        SELECTEDVALUE(CalculationPeriod[Period], "Not Applicable"),
+			        "YTD", "Year to Date",
+			        "L12M", "Last 12 Months",
+			        "L6M", "Last 6 Months",
+			        "L3M", "Last 3 Months",
+			        "Not Applicable"
+			    )
+			
+			```
+		displayFolder: Expenses
+		lineageTag: 31de6ded-453f-4643-b870-3089e0b58b94
+
+	measure ExpenseSubTitle = ```
+			
+			    SWITCH(
+			        SELECTEDVALUE(CalculationPeriod[Period]),
+			        
+			        // Last 12 Months (L12M)
+			        "L12M", 
+			        "Total: " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                    FILTER(
+			                        Accounts,
+			                        Accounts[Type] = "Expense"
+			                    ),
+			                    FILTER(
+			                        CalendarTable,
+			                        CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From 12 months ago
+			                        CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                    )
+			                )
+			            ), 
+			            "€ #,##0"
+			        ) & 
+			        " | Average: " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                    FILTER(
+			                        Accounts,
+			                        Accounts[Type] = "Expense"
+			                    ),
+			                    FILTER(
+			                        CalendarTable,
+			                        CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From 12 months ago
+			                        CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                    )
+			                )
+			            ) / 12, 
+			            "€ #,##0"
+			        ),
+			        
+			        // Last 6 Months (L6M)
+			        "L6M", 
+			        "Total: " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                    FILTER(
+			                        Accounts,
+			                        Accounts[Type] = "Expense"
+			                    ),
+			                    FILTER(
+			                        CalendarTable,
+			                        CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From 6 months ago
+			                        CalendarTable[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ), 
+			            "€ #,##0"
+			        ) & 
+			        " | Average: " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                    FILTER(
+			                        Accounts,
+			                        Accounts[Type] = "Expense"
+			                    ),
+			                    FILTER(
+			                        CalendarTable,
+			                        CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From 6 months ago
+			                        CalendarTable[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ) / 6, 
+			            "€ #,##0"
+			        ),
+			        
+			        // Last 3 Months (L3M)
+			        "L3M", 
+			        "Total: " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                    FILTER(
+			                        Accounts,
+			                        Accounts[Type] = "Expense"
+			                    ),
+			                    FILTER(
+			                        CalendarTable,
+			                        CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From 3 months ago
+			                        CalendarTable[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ), 
+			            "€ #,##0"
+			        ) & 
+			        " | Average: " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                    FILTER(
+			                        Accounts,
+			                        Accounts[Type] = "Income"
+			                    ),
+			                    FILTER(
+			                        CalendarTable,
+			                        CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From 3 months ago
+			                        CalendarTable[Date] <= EOMONTH(TODAY(), -1)
+			                    )
+			                )
+			            ) / 3, 
+			            "€ #,##0"
+			        ),
+			
+			        // Year-to-Date (YTD)
+			        "YTD", 
+			        "Total: " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                    FILTER(
+			                        Accounts,
+			                        Accounts[Type] = "Income"
+			                    ),
+			                    FILTER(
+			                        CalendarTable,
+			                        CalendarTable[Date] >= DATE(YEAR(TODAY()), 1, 1) && // From the first day of the current year
+			                        CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                    )
+			                )
+			            ), 
+			            "€ #,##0"
+			        ) & 
+			        " | Average: " & 
+			        FORMAT(
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                    FILTER(
+			                        Accounts,
+			                        Accounts[Type] = "Income"
+			                    ),
+			                    FILTER(
+			                        CalendarTable,
+			                        CalendarTable[Date] >= DATE(YEAR(TODAY()), 1, 1) && // From the first day of the current year
+			                        CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                    )
+			                )
+			            ) / MONTH(TODAY() - 1), 
+			            "€ #,##0"
+			        ),
+			
+			        "Not Applicable"
+			    )
+			
+			```
+		displayFolder: Expenses
+		lineageTag: 0487b1bb-48aa-4c69-9d79-c41434fa5850
+
+	measure NetIncomeTitle = ```
+			
+			    "Net Income for " &
+			    SWITCH(
+			        SELECTEDVALUE(CalculationPeriod[Period], "Not Applicable"),
+			        "YTD", "Year to Date",
+			        "L12M", "Last 12 Months",
+			        "L6M", "Last 6 Months",
+			        "L3M", "Last 3 Months",
+			        "Not Applicable"
+			    )
+			
+			```
+		displayFolder: Profitability
+		lineageTag: d74bd4f4-0e2a-409d-8fe0-0b9a2ca7d797
+
+	measure NetIncomeSubTitle = ```
+			
+			    SWITCH(
+			        SELECTEDVALUE(CalculationPeriod[Period], "Not Applicable"),
+			        
+			        // Last 12 Months (L12M)
+			        "L12M", 
+			        "Total: " & FORMAT([Net Income], "€ #,##0") & 
+			        " | Average: " & FORMAT([Net Income] / 12, "€ #,##0"),
+			
+			        // Last 6 Months (L6M)
+			        "L6M", 
+			        "Total: " & FORMAT([Net Income], "€ #,##0") & 
+			        " | Average: " & FORMAT([Net Income] / 6, "€ #,##0"),
+			
+			        // Last 3 Months (L3M)
+			        "L3M", 
+			        "Total: " & FORMAT([Net Income], "€ #,##0") & 
+			        " | Average: " & FORMAT([Net Income] / 6, "€ #,##0"),
+			
+			        // Year-to-Date (YTD)
+			        "YTD", 
+			        "Total: " & FORMAT([Net Income], "€ #,##0") & 
+			        " | Average: " & FORMAT([Net Income] / (MONTH(TODAY()) - 1), "€ #,##0"),
+			
+			        "Not Applicable"
+			    )
+			
+			```
+		displayFolder: Profitability
+		lineageTag: c0cc9eb0-7c6d-448c-a6d6-9fb06bab6133
+
+	measure ExpenseRibbonTitle = ```
+			
+			    "Expenses by Categories for " &
+			    SWITCH(
+			        SELECTEDVALUE(CalculationPeriod[Period], "Not Applicable"),
+			        "YTD", "Year to Date",
+			        "L12M", "Last 12 Months",
+			        "L6M", "Last 6 Months",
+			        "L3M", "Last 3 Months",
+			        "Not Applicable"
+			    )
+			
+			```
+		displayFolder: Expenses
+		lineageTag: ced5c705-210c-42d8-a0fd-98ebc63b076d
+
+	measure AverageIncome = ```
+			
+			    SWITCH(
+			        SELECTEDVALUE(CalculationPeriod[Period]),
+			        
+			        // Year-To-Date (YTD)
+			        "YTD", 
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                FILTER(
+			                    Accounts,
+			                    Accounts[Type] = "Income"
+			                ),
+			                FILTER(
+			                    CalendarTable,
+			                    CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                    CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                    )
+			                )
+			            ),
+			
+			        // Last 12 Months (L12M)
+			        "L12M", 
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                FILTER(
+			                    Accounts,
+			                    Accounts[Type] = "Income"
+			                ),
+			                FILTER(
+			                    CalendarTable,
+			                    CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                    CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                    )
+			                )
+			            ) / 12,
+			        
+			        // Last 6 Months (L6M)
+			        "L6M", 
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                FILTER(
+			                    Accounts,
+			                    Accounts[Type] = "Income"
+			                ),
+			                FILTER(
+			                    CalendarTable,
+			                    CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                    CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                    )
+			                )
+			            ) / 6,
+			        
+			        // Last 3 Months (L3M)
+			        "L3M",
+			            ABS(
+			                CALCULATE(
+			                    SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                FILTER(
+			                    Accounts,
+			                    Accounts[Type] = "Income"
+			                ),
+			                FILTER(
+			                    CalendarTable,
+			                    CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                    CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                    )
+			                )
+			            ) / 3,
+			        
+			        0 // Default value if no selection
+			    )
+			
+			```
+		displayFolder: Income
+		lineageTag: 05551634-9c3b-4c77-b5d5-7eca2c300e9d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure IncomeDonutTitle = ```
+			
+			    "Income by type for " &
+			    SWITCH(
+			        SELECTEDVALUE(CalculationPeriod[Period], "Not Applicable"),
+			        "YTD", "Year to Date",
+			        "L12M", "Last 12 Months",
+			        "L6M", "Last 6 Months",
+			        "L3M", "Last 3 Months",
+			        "Not Applicable"
+			    )
+			
+			```
+		displayFolder: Expenses
+		lineageTag: a1170016-4e73-4dc0-adc5-68832d5dea8b
+
+	measure 'Dynamic Net Amount' = [Total Income] - [Total Expenses]
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		displayFolder: Supporting Measures
+		lineageTag: 0bb71614-9ce6-4c38-8da4-122da0bd6780
+
+	measure Profit&LossWaterFallTitle = ```
+			
+			    "Profit & Loss for " &
+			    SWITCH(
+			        SELECTEDVALUE(CalculationPeriod[Period], "Not Applicable"),
+			        "YTD", "Year to Date",
+			        "L12M", "Last 12 Months",
+			        "L6M", "Last 6 Months",
+			        "L3M", "Last 3 Months",
+			        "Not Applicable"
+			    )
+			
+			```
+		displayFolder: Supporting Measures
+		lineageTag: 059aa839-c395-470a-9a18-4db6c0412fdf
+
+	measure '1.01 Sales and services provided' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "71", "72" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "71", "72" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "71", "72" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "71", "72" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		displayFolder: New Calculations
+		lineageTag: cd91e3b5-f8b4-4719-a1f0-daef65246cee
+
+	measure '1.02  Cost of goods sold and materials consumed' = ```
+			-
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "61", "31" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "61", "31" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "61", "31" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "61", "31" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		displayFolder: New Calculations
+		lineageTag: 582a4dd8-2269-4d8e-963c-fdfe17593fb4
+
+	measure '1.03 Gross Profit' = [1.01 Sales and services provided] + [1.02  Cost of goods sold and materials consumed]
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		displayFolder: New Calculations
+		lineageTag: f8558f2e-0cf6-438b-a17f-46e0c0c9f51b
+
+	measure '1.04 Gross Margin' = ```
+			
+			    DIVIDE(
+			        [1.03 Gross Profit],
+			        [1.01 Sales and services provided]
+			    )
+			```
+		formatString: 0%;-0%;0%
+		displayFolder: New Calculations
+		lineageTag: c37c0563-5beb-4e91-b5aa-b229b6c6ff3e
+
+	measure '2.01 Exploration subsidies' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "75" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "75" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "75" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "75" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: "€"\ #,0;-"€"\ #,0;"€"\ #,0
+		displayFolder: New Calculations
+		lineageTag: f27a4bac-aed4-4b90-a56e-aa9f95766523
+
+	measure '2.02 Imputed gains/losses of subsidiaries, associates and enterprises' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "785" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "685" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "785" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "685" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "785" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "685" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "785" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "685" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: d918bc62-d80b-42a3-a8a0-a43b7d3a89c6
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '2.03 Variation in production inventories' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "73" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "73" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "73" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "73" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: fda65a9b-c62f-41b1-8c86-a643fca53854
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '2.04 Work for the entity itself' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "74" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "74" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "74" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "74" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: 33d1a95e-6b53-4bdc-85c6-5d6aaf608e3b
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '2.05 External supplies and services' = ```
+			-
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "62" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "62" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "62" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "62" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: d6c583c9-893c-4595-a0e2-f7f96cbfa048
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '2.06 Personnel expenses' = ```
+			-
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "63" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "63" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "63" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "63" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: e7e8f63e-9bc9-46a0-87a9-5000c323f713
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '2.07 Inventory Adjustments (losses/reversals)' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "7622" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "652" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "7622" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "652" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "7622" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "652" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "7622" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "652" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: 700dd3a2-64cb-4662-9738-6481760eac02
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '2.08 Impairment (losses/reversals)' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "7621" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "651" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "7621" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "651" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "7621" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "651" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "7621" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "651" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: a485a9ca-b4f7-41f0-ac58-36335571f3e0
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '2.09 Provisions (increases/reductions)' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "763" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "67" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "763" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "67" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "763" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "67" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "763" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "67" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: 72207dee-08b9-4f6f-97ba-f619b08787d5
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '2.10 Impairment of non-depreciable/amortizable assets (losses/reversals)' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "7623, 7627, 7628" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "653, 657, 658" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "7623, 7627, 7628" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "653, 657, 658" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "7623, 7627, 7628" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "653, 657, 658" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "7623, 7627, 7628" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "653, 657, 658" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: fe6ad5c9-ad6b-4cb4-8311-0dc7392ec6c7
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '2.11 Fair value increases/reductions' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "77" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "66" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "77" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "66" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "77" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "66" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "77" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "66" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: 7335ebf3-9b34-4e18-ac2d-d20a0dbe8f0f
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '3.01 Depreciation and amortization expenses/reversals' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "761" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "64" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "761" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "64" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "761" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "64" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "761" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "64" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: 54b145a4-265c-4b0d-9b62-25c58c4c1d44
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '3.02 Impairment of depreciable/amortizable assets (losses/reversals)' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "7624, 7825, 7826" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "654, 655, 656" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "7624, 7825, 7826" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "654, 655, 656" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "7624, 7825, 7826" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "654, 655, 656" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "7624, 7825, 7826" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "654, 655, 656" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: 43b32377-afc0-421c-a925-e2d1de4a8273
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '4.01 Interest and similar income earned' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "7915, 793" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "7915, 793" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "7915, 793" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "7915, 793" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: e6134c46-9961-4ad7-a306-fedc0cad6559
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '4.02 Interest and similar expenses incurred' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "69" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "69" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "69" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 2) IN { "69" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: 2dfd1fd9-d523-4b41-bdd0-95bfab5808d5
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '2.12 Other Income' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "78, 79" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "785, 7915, 793" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "78, 79" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "785, 7915, 793" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "78, 79" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "785, 7915, 793" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "78, 79" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "785, 7915, 793" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: 9d74e19a-aa51-4bcb-b76c-fe9f49655f2a
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '2.13 Other Expenses' = ```
+			
+			        SWITCH(
+			            SELECTEDVALUE(CalculationPeriod[Period]),
+			            
+			            // Year-To-Date (YTD)
+			            "YTD", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "685" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "68" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), - MONTH(TODAY())) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), 0) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 12 Months (L12M)
+			            "L12M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "78, 79" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "68" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -13) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 6 Months (L6M)
+			            "L6M", 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "78, 79" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "68" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -7) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			
+			            // Last 3 Months (L3M)
+			            "L3M",
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "78, 79" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ) - 
+			                ABS(
+			                    CALCULATE(
+			                        SUM(Data[Débito]) - SUM(Data[Crédito]),
+			                        FILTER(
+			                            Accounts,
+			                            LEFT(Accounts[Conta], 3) IN { "68" }
+			                        ),
+			                        FILTER(
+			                            CalendarTable,
+			                            CalendarTable[Date] >= EOMONTH(TODAY(), -4) + 1 && // From the first day of the current year
+			                            CalendarTable[Date] <= EOMONTH(TODAY(), -1) // Until the last day of the previous month
+			                        )
+			                    )
+			                ),
+			            
+			            0 // Default value if no selection
+			        )
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: 083ab225-db1f-4c96-87f8-3ae05d3ff69c
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '4.04 Net Income' = ```
+			
+			    [1.01 Sales and services provided] +
+			    [1.02  Cost of goods sold and materials consumed] +
+			    [2.14 Operating Expenses] +
+			    [4.03 Other Income & Expenses]
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: 9714e380-7f1c-4a69-93f9-be69fd36ebe4
+
+	measure '2.14 Operating Expenses' = ```
+			
+			    [2.01 Exploration subsidies] +
+			    [2.02 Imputed gains/losses of subsidiaries, associates and enterprises] +
+			    [2.03 Variation in production inventories] +
+			    [2.04 Work for the entity itself] +
+			    [2.05 External supplies and services] +
+			    [2.06 Personnel expenses] +
+			    [2.07 Inventory Adjustments (losses/reversals)] +
+			    [2.08 Impairment (losses/reversals)] +
+			    [2.09 Provisions (increases/reductions)] +
+			    [2.10 Impairment of non-depreciable/amortizable assets (losses/reversals)] +
+			    [2.11 Fair value increases/reductions] +
+			    [2.12 Other Income] +
+			    [2.13 Other Expenses]
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: 2cbde8d3-ee4f-46a1-a4d5-2f707f31f7f5
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '2.15 EBITDA' = ```
+			
+			    [1.03 Gross Profit] +
+			    [2.14 Operating Expenses]
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: 9ce5cc8d-18d0-45ea-bf19-aee5f3724e59
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '4.03 Other Income & Expenses' = ```
+			
+			    [3.01 Depreciation and amortization expenses/reversals] +
+			    [3.02 Impairment of depreciable/amortizable assets (losses/reversals)]
+			```
+		formatString: #,0
+		displayFolder: New Calculations
+		lineageTag: b1c921d6-8ff3-42ee-98da-4f1bc59a013c
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '2.16 EBITDA Margin' = ```
+			
+			    DIVIDE(
+			        [2.15 EBITDA],
+			        [1.01 Sales and services provided]
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: New Calculations
+		lineageTag: 203174d1-348e-4f90-b125-e29c6c18ef08
+
+	measure Expenses = ```
+			
+			    ABS(
+			        CALCULATE(
+			            SUM(Data[Débito]) - SUM(Data[Crédito]),
+			        FILTER(
+			            Accounts,
+			            Accounts[Type] = "Expense"
+			    )))
+			```
+		formatString: #,0
+		displayFolder: Expenses
+		lineageTag: 81c632e6-3925-4740-9704-103fd744fb7b
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure Measure
+		displayFolder: Income
+		lineageTag: f150aae5-d5a4-431f-b2ef-b93c09bc097c
+
+		annotation 43dbc3e8-3a1c-4b6f-9923-b49ff7d6691c = True
+
+	measure Income = ```
+			
+			    ABS(
+			        CALCULATE(
+			            SUM(Data[Débito]) - SUM(Data[Crédito]),
+			        FILTER(
+			            Accounts,
+			            Accounts[Type] = "Income"
+			    )))
+			```
+		formatString: #,0
+		displayFolder: Income
+		lineageTag: 22b703de-ce54-4d71-928a-f13c4eb6e5f9
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Placeholder 0' = 0
+		formatString: 0
+		displayFolder: Supporting Measures
+		lineageTag: 53b7f178-900e-4d9e-bcda-06ff93ba223e
+
+	measure IncomeRibbonTitle = ```
+			
+			    "Income by Categories for " &
+			    SWITCH(
+			        SELECTEDVALUE(CalculationPeriod[Period], "Not Applicable"),
+			        "YTD", "Year to Date",
+			        "L12M", "Last 12 Months",
+			        "L6M", "Last 6 Months",
+			        "L3M", "Last 3 Months",
+			        "Not Applicable"
+			    )
+			
+			```
+		displayFolder: Income
+		lineageTag: 0cdbece3-0f36-460c-a349-74b24a525ada
+
+	measure 'Net Amount' = ```
+			
+			    CALCULATE(
+			        SUM(Data[Crédito]) - SUM(Data[Débito])
+			    )
+			```
+		formatString: #,0
+		displayFolder: Supporting Measures
+		lineageTag: 5a348167-e3ab-409f-a32e-2119b651110e
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	partition _Measures = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

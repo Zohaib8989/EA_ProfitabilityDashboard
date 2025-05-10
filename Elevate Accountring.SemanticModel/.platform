@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Elevate Accountring"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "39541807-e5c2-45e3-823d-1af167d47093"
+  }
+}

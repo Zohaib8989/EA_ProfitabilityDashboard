@@ -1,0 +1,85 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 470.66665649414063,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 591,
+            "y": 0
+          },
+          "nodeIndex": "Accounts",
+          "nodeLineageTag": "219a4ee9-fe52-48ee-b426-3ab3d545fe8d",
+          "size": {
+            "height": 301,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 269,
+            "y": 0
+          },
+          "nodeIndex": "Data",
+          "size": {
+            "height": 542,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 901,
+            "y": 6
+          },
+          "nodeIndex": "CalculationPeriod",
+          "nodeLineageTag": "80e57026-4277-442a-aac1-9b1409ae7111",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "nodeIndex": "CalendarTable",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 900,
+            "y": 328
+          },
+          "nodeIndex": "_Measures",
+          "nodeLineageTag": "bceaee26-5004-4830-9031-3791c9e32cd4",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}
